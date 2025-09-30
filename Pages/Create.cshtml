@@ -1,0 +1,144 @@
+@page
+@model CreateModel
+@using project.Enums
+
+	<style>
+		.book-form {
+  width: 90%;
+  max-width: 600px;
+  margin: 2rem auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.book-form h1 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.book-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.book-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.book-form input[type="text"],
+.book-form input[type="number"],
+.book-form select {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border 0.2s;
+}
+
+.book-form input[type="text"]:focus,
+.book-form input[type="number"]:focus,
+.book-form select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.book-form .required {
+  color: red;
+}
+
+/* Discount inactive look */
+.book-form .inactive {
+  background: #eee;
+  cursor: not-allowed;
+}
+
+/* Custom Buttons (optional, if you don’t want Bootstrap default) */
+.book-form .btn-custom {
+  display: inline-block;
+  background: #007bff;
+  color: #fff;
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+
+.book-form .btn-custom:hover {
+  background: #0056b3;
+}
+
+	</style>
+	
+	<div class="book-form">
+    <h1>Add a New Book</h1>
+    
+    <form method="post" id="bookForm">
+      <!-- Title -->
+      <div class="form-group">
+        <label asp-for="Book.Title"></label>
+        <input type="text" id="title" asp-for="Book.Title" >
+        <span asp-validation-for="Book.Title" ></span>
+      </div>
+
+      <!-- Author -->
+      <div class="form-group">
+        <label asp-for="Book.AuthorName"></label>
+        <input type="text" id="authorName" asp-for="Book.AuthorName">
+        <span asp-validation-for="Book.AuthorName"></span>
+      </div>
+
+      <!-- Language -->
+      <div class="col form-group">
+          <label asp-for="Book.Language"></label>
+          <select asp-for="Book.Language" id="language" asp-items="@Html.GetEnumSelectList<ELanguage>()">
+          <span asp-validation-for="Book.Language"></span>
+          </select>
+        </div>
+
+      <!-- Price -->
+      <div class="form-group">
+        <label asp-for="Book.Price"></label>
+        <input type="number" asp-for="Book.Price" id="price">
+        <span asp-validation-for="Book.Price" class="text-danger"></span>
+      </div>
+
+      <!-- Discount -->
+      <div class="form-group">
+        <label asp-for="Book.DiscountPercent">
+          
+        </label>
+        <input type="number" asp-for="Book.DiscountPercent" id="discountPercent" placeholder="Discount %" >
+      </div>
+
+      <!-- Hidden SellPrice -->
+      <input type="hidden" asp-for="Book.SellPrice" id="sellPrice" name="sellPrice">
+        <span asp-validation-for="Book.SellPrice" class="text-danger"></span>
+
+      @* <div asp-validation-summary="All" class="text-danger"></div> *@
+
+      <!-- Submit -->
+      <button type="submit" class="btn">Save</button>
+    </form>
+  </div>
+
+  <!--<script>
+    // Toggle discount field
+    const hasDiscountCheckbox = document.getElementById('hasDiscount');
+    const discountInput = document.getElementById('discountPercent');
+
+    hasDiscountCheckbox.addEventListener('change', () => {
+      if (hasDiscountCheckbox.checked) {
+        discountInput.disabled = false;
+        discountInput.classList.remove('inactive');
+      } else {
+        discountInput.disabled = true;
+        discountInput.value = "";
+        discountInput.classList.add('inactive');
+      }
+    });
+  </script>-->

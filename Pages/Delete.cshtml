@@ -1,0 +1,134 @@
+@page "/Delete/{id:int}"
+@model DeleteModel
+
+<style>
+  .delete-form {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    font-family: system-ui, Arial, sans-serif;
+    color: #222;
+  }
+
+  .delete-form h1 {
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
+  .delete-form .warning {
+    background: #fff3f3;
+    border: 1px solid #f5c2c7;
+    color: #842029;
+    padding: 0.75rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .delete-form .form-group {
+    margin-bottom: 0.9rem;
+  }
+
+  .delete-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+  }
+
+  .delete-form input,
+  .delete-form select {
+    width: 100%;
+    padding: 0.55rem 0.65rem;
+    border: 1px solid #d0d5dd;
+    border-radius: 6px;
+    background: #f9fafb;
+    color: #555;
+  }
+
+  .delete-form input[readonly],
+  .delete-form select[disabled] {
+    @* cursor: not-allowed; *@
+  }
+
+  .delete-form .controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+  }
+
+  .delete-form .btn {
+    padding: 0.6rem 1.1rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .delete-form .btn-delete {
+    background: #dc2626;
+    color: #fff;
+  }
+
+  .delete-form .btn-cancel {
+    background: #f3f4f6;
+    color: #111;
+  }
+
+  .delete-form .btn:hover {
+    opacity: 0.9;
+  }
+  </style>
+
+<div class="delete-form">
+<h1>Delete Book</h1>
+
+    <div class="warning">
+      Are you sure you want to delete this book? This action cannot be undone.
+    </div>
+
+<form method="post">
+
+  <input asp-for="Book.Id" type="hidden">		
+      <div class="form-group">
+        <label asp-for="Book.Title"></label>
+        <input id="Book.Title" asp-for="Book.Title" readonly>
+      </div>
+
+      <div class="form-group">
+        <label asp-for="Book.AuthorName"></label>
+        <input asp-for="Book.AuthorName" id="author" readonly>
+      </div>
+
+      <div class="form-group">
+        <label asp-for="Book.Language"></label>
+        <input id="language" asp-for="Book.Language" readonly>
+      </div>
+
+      <div class="form-group">
+        <label asp-for="Book.Price">Price</label>
+        <input asp-for="Book.Price" id="price" readonly>
+      </div>
+
+      <div class="form-group">
+        <label asp-for="Book.DiscountPercent"></label>
+        <input asp-for="Book.DiscountPercent" id="discount" readonly>
+      </div>
+
+      <div class="form-group">
+        <label asp-for="Book.SellPrice"></label>
+        <input asp-for="Book.SellPrice" id="sellPrice" readonly>
+      </div>
+      
+      @* <div asp-validation-summary="All" class="text-danger"></div> *@
+
+      <div class="controls">
+        <button type="submit" class="btn btn-delete">Delete</button>
+        <a asp-page="/Index" class="btn btn-cancel">Cancel</a>
+      </div>
+    </form>
+	</div>

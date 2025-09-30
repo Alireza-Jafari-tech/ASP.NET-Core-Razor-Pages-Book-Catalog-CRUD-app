@@ -1,0 +1,286 @@
+@page "/Edit/{id:int}"
+@model EditModel
+@using project.Enums
+
+<style>
+  /* Scoped styles for the edit form to avoid interfering with layout/Bootstrap */
+  .book-form {
+    width: 92%;
+    max-width: 760px;
+    margin: 2rem auto;
+    background: #ffffff;
+    padding: 1.6rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color: #222;
+  }
+
+  .book-form h1 {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+    text-align: left;
+  }
+
+  .book-form .row {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .book-form .col {
+    flex: 1 1 220px;
+    min-width: 180px;
+  }
+
+  .book-form .form-group {
+    margin-bottom: 0.9rem;
+  }
+
+  .book-form label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .book-form input[type="text"],
+  .book-form input[type="number"],
+  .book-form select,
+  .book-form .readonly {
+    width: 100%;
+    padding: 0.55rem 0.65rem;
+    border: 1px solid #d0d5dd;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: border-color .15s ease;
+    background: #fff;
+  }
+
+  .book-form input[type="text"]:focus,
+  .book-form input[type="number"]:focus,
+  .book-form select:focus {
+    outline: none;
+    border-color: #3b82f6; /* blue focus */
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.08);
+  }
+
+  .book-form .required { color: #d02626; margin-left: 0.25rem; }
+
+  /* Discount inactive look */
+  .book-form input.inactive {
+    background: #f5f6f7;
+    color: #8b8f94;
+    cursor: not-allowed;
+  }
+
+  /* Controls area */
+  .book-form .controls {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  .book-form .btn-custom {
+    display: inline-block;
+    padding: 0.56rem 0.9rem;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .book-form .btn-save {
+    background: #0b74f6;
+    color: #fff;
+  }
+
+  .book-form .btn-cancel {
+    background: transparent;
+    color: #374151;
+    border: 1px solid #e6e9ee;
+  }
+
+  .book-form .btn-custom:active { transform: translateY(1px); }
+
+  /* Discount inline layout */
+  .discount-line {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+  }
+
+  .discount-line input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+  }
+
+  .note {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+  }
+
+  /* small responsive tweaks */
+  @@media (max-width: 520px) {
+    .book-form .row { flex-direction: column; }
+    .book-form .controls { flex-direction: column; align-items: stretch; }
+  }
+  </style>
+
+  <div class="book-form" role="main" aria-labelledby="pageTitle">
+    <h1 id="pageTitle">Edit Book</h1>
+
+    <!-- Example: if you render server-side, fill 'value' attributes with model values -->
+    <form id="editBookForm" method="post">
+      <!-- Title -->
+      <div class="form-group">
+        <label for="Book.Title"></label>
+        <input asp-for="Book.Title" id="title" type="text">
+        <span asp-validation-for="Book.Title"></span>
+      </div>
+
+      <!-- Author & Language -->
+      <div class="row">
+        <div class="col form-group">
+          <label asp-for="Book.AuthorName"></label>
+          <input asp-for="Book.AuthorName" id="author" type="text">
+          <span asp-validation-for="Book.AuthorName"></span>
+        </div>
+        <div class="col form-group">
+          <label asp-for="Book.Language"></label>
+          <select asp-for="Book.Language" id="language" asp-items="@Html.GetEnumSelectList<ELanguage>()">
+          <span asp-validation-for="Book.Language"></span>
+          </select>
+        </div>
+      </div>
+
+      <!-- Price, Discount, SellPrice -->
+        <div class="row">
+          <div class="col form-group">
+            <label asp-for="Book.Price"></label>
+            <input asp-for="Book.Price" id="price" type="number" />
+            <span asp-validation-for="Book.Price"></span>
+        </div>
+
+        <div class="col form-group">
+            <label asp-for="Book.DiscountPercent" style="margin:0"></label>
+            <input asp-for="Book.DiscountPercent" id="discountPercent" type="number" placeholder="Percent (0-100)" />
+            <span asp-validation-for="Book.DiscountPercent"></span>
+            <div class="note">Uncheck to disable discount; percent must be 0–100</div>
+        </div>
+      </div>
+
+      <!-- Displayed Sell Price (readonly) + Hidden input for submission -->
+      <div class="form-group">
+        <label asp-for="Book.SellPrice"></label>
+        <input asp-for="Book.SellPrice" id="sellPriceDisplay" type="number" />
+        <!-- Hidden input to be posted to server -->
+        <input asp-for="Book.Id" id="sellPriceHidden" type="hidden" />
+      </div>
+
+      @* <div asp-validation-summary="All" class="text-danger"></div> *@
+      
+        <!-- Controls -->
+        <div class="controls">
+          <button type="submit" class="btn-custom btn-save">Save changes</button>
+          <a asp-page="/Index" class="btn-custom btn-cancel" role="button">Cancel</a>
+        </div>
+    </form>
+  </div>
+
+    <!--<script>
+    // DOM references
+    const priceInput = document.getElementById('price');
+    const hasDiscount = document.getElementById('hasDiscount');
+    const discountInput = document.getElementById('discountPercent');
+    const sellDisplay = document.getElementById('sellPriceDisplay');
+    const sellHidden = document.getElementById('sellPriceHidden');
+    const form = document.getElementById('editBookForm');
+
+    // Initialize discount state on page load
+    function initDiscountState() {
+      if (!hasDiscount.checked) {
+        disableDiscount();
+      } else {
+        enableDiscount();
+      }
+      recalcSellPrice();
+    }
+
+    function enableDiscount() {
+      discountInput.disabled = false;
+      discountInput.classList.remove('inactive');
+      // if empty, set default 0
+      if (discountInput.value === '') discountInput.value = 0;
+    }
+
+    function disableDiscount() {
+      discountInput.value = '';
+      discountInput.disabled = true;
+      discountInput.classList.add('inactive');
+    }
+
+    // Calculate sell price and update display + hidden field
+    function recalcSellPrice() {
+      const price = parseFloat(priceInput.value);
+      let discount = 0;
+      if (hasDiscount.checked) {
+        discount = Number(discountInput.value);
+        if (isNaN(discount)) discount = 0;
+        // clamp
+        if (discount < 0) discount = 0;
+        if (discount > 100) discount = 100;
+      }
+
+      if (isNaN(price) || price < 0) {
+        sellDisplay.value = '';
+        sellHidden.value = '';
+        return;
+      }
+
+      const factor = (100 - discount) / 100;
+      const sell = Math.round((price * factor + Number.EPSILON) * 100) / 100; // round to 2 decimals
+
+      // show with currency-like format (no localization to keep simple)
+      sellDisplay.value = '$' + sell.toFixed(2);
+      sellHidden.value = sell.toFixed(2);
+    }
+
+    // events
+    hasDiscount.addEventListener('change', () => {
+      if (hasDiscount.checked) enableDiscount();
+      else disableDiscount();
+      recalcSellPrice();
+    });
+
+    priceInput.addEventListener('input', recalcSellPrice);
+    discountInput.addEventListener('input', recalcSellPrice);
+
+    // form validation: ensure discount within 0..100 if enabled
+    form.addEventListener('submit', (e) => {
+      if (hasDiscount.checked) {
+        const val = Number(discountInput.value);
+        if (isNaN(val) || val < 0 || val > 100) {
+          e.preventDefault();
+          alert('Discount percent must be a number between 0 and 100.');
+          discountInput.focus();
+          return false;
+        }
+      }
+      // ensure price is valid
+      const p = parseFloat(priceInput.value);
+      if (isNaN(p) || p < 0) {
+        e.preventDefault();
+        alert('Price must be a positive number.');
+        priceInput.focus();
+        return false;
+      }
+      // sellHidden is already set by recalcSellPrice; no further action needed
+    });
+
+    // run initial setup
+    initDiscountState();
+  </script>-->
