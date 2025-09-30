@@ -19,30 +19,45 @@ This project captures the fundamentals: setting up the database, using migration
 - Automatic calculation of **Sell Price** based on discount
 - Enum-based support for multiple languages (English, فارسی, العربية, Français)
 
----
-
 ## 🛠️ Technologies
 - **ASP.NET Core 8.0** (Razor Pages)
 - **Entity Framework Core** (Code-First + Migrations)
 - **SQL Server** (local DB)
 - **Bootstrap 5** (basic UI styling)
 
----
-
 - ## 📸 Snapshots / Screenshots
+- Home / List of Books
 
+  <img width="1343" height="673" alt="index" src="https://github.com/user-attachments/assets/f8b3204c-538a-473b-9a83-f670224c3831" />
+
+- create Book Page
+
+   <img width="1343" height="902" alt="add" src="https://github.com/user-attachments/assets/a5583d81-1941-40f2-a36e-248bab2299b0" />
+   
+- Edit Book Page
+
+<img width="1343" height="732" alt="edit" src="https://github.com/user-attachments/assets/95367d3a-8fff-450b-961c-421f900f0391" />
+
+- Delete Book Page
+
+- <img width="1343" height="1007" alt="delete (2)" src="https://github.com/user-attachments/assets/7c5b3cf6-55ab-4f90-b88b-824986b5d0c5" />
+
+- Show Book details Page
+
+  <img width="1343" height="1000" alt="details" src="https://github.com/user-attachments/assets/938bd858-6044-4a6e-a22f-163d43a7b84d" />
+  
 - - ## ⚙️ Installation & Setup
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Alireza-Jafari-tech/Razor-Pages-Fundamentals-Week-2.git
-   cd Razor-Pages-Fundamentals-Week-2
+   git clone https://github.com/Alireza-Jafari-tech/ASP.NET-Core-Razor-Pages-Book-Catalog-CRUD-app.git
+   cd ASP.NET-Core-Razor-Pages-Book-Catalog-CRUD-app
    ```
 
 2. Update the connection string in appsettings.json:
    ```json
    "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=TaskManagmentDb;Trusted_Connection=True;TrustServerCertificate=True"}
+    "DefaultConnection": "Server=localhost;Database=BookCatalogDb;Trusted_Connection=True;TrustServerCertificate=True"}
 
 3. Apply migrations & ensure database is up to date:
 ```bash
@@ -53,6 +68,7 @@ dotnet ef database update
 ```bash
 dotnet run
 ```
+Then open http://localhost:7000
 
 📂 Project Structure
 ```pgsql
@@ -75,4 +91,33 @@ ELanguage.cs → Supported languages enum
 
 ---
 
-## 📂 Project Structure
+##🎯 Learning Goals
+
+- Understand Razor Pages structure
+
+- Practice Model Binding and Validation
+
+- Work with Enums in forms
+
+- Explore EF Core CRUD operations
+
+- Get hands-on with ASP.NET Core web development
+
+🧑‍💻 Usage
+
+- Use Create page to add a Book
+
+- Use Index page to see the list of Books
+
+- Use Edit to edit a Book
+
+- Use Delete to remove a Book
+
+📝 License
+
+This project is licensed under the MIT License. See the LICENSE
+ file for details
+
+🤝 Contributing
+
+This project is for learning purposes, but feel free to fork and improve it. Suggestions and pull requests are welcome.
